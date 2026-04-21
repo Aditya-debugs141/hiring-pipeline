@@ -1,0 +1,8 @@
+/* Base reset — App.css handles all design tokens, colors, and layout */
+body {
+  margin: 0;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
