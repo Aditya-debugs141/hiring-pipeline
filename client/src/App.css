@@ -10,14 +10,10 @@
 
 body {
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
-  background: #050505; /* Deeper black */
-  color: #FAFAFA;
+  background: #09090B; /* Zinc-950 */
+  color: #FAFAFA; /* Zinc-50 */
   line-height: 1.6;
   min-height: 100vh;
-  background-image: 
-    radial-gradient(circle at 10% 20%, rgba(234, 88, 12, 0.05) 0%, transparent 40%),
-    radial-gradient(circle at 90% 80%, rgba(37, 99, 235, 0.05) 0%, transparent 40%);
-  background-attachment: fixed;
 }
 
 ::selection {
@@ -31,13 +27,13 @@ body {
   align-items: center;
   justify-content: space-between;
   padding: 1rem 2.5rem;
-  background: rgba(5, 5, 5, 0.6);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  background: rgba(9, 9, 11, 0.7);
+  border-bottom: 1px solid #27272A; /* Zinc-800 */
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   position: sticky;
   top: 0;
-  z-index: 1000;
+  z-index: 100;
 }
 
 .nav-brand {
@@ -115,23 +111,19 @@ body {
 
 /* ─── Cards ─── */
 .card {
-  background: rgba(24, 24, 27, 0.6); /* Translucent Zinc-900 */
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-radius: 1.5rem;
+  background: #18181B; /* Zinc-900 */
+  border: 1px solid #27272A; /* Zinc-800 */
+  border-radius: 1.5rem; /* Rounded-3xl */
   padding: 1.5rem;
   margin-bottom: 0.75rem;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.2s ease;
   position: relative;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
 .card:hover {
-  border-color: rgba(234, 88, 12, 0.5);
-  transform: translateY(-6px) scale(1.02);
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2), 0 10px 10px -5px rgba(234, 88, 12, 0.1);
-  background: rgba(31, 31, 35, 0.8);
+  border-color: #EA580C; /* Orange accent border on hover */
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px -10px rgba(234, 88, 12, 0.15);
 }
 
 .card-clickable {
@@ -348,14 +340,11 @@ input[type="number"] {
 }
 
 .form-inline {
-  background: rgba(24, 24, 27, 0.5);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: #18181B;
+  border: 1px solid #27272A;
   border-radius: 1.5rem;
   padding: 2rem;
   margin-bottom: 2rem;
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
 }
 
 .form-inline h3 {
@@ -400,7 +389,7 @@ table {
   width: 100%;
   border-collapse: collapse;
   font-size: 0.85rem;
-  background: rgba(24, 24, 27, 0.4);
+  background: #18181B;
 }
 
 th {
@@ -430,10 +419,8 @@ tr:hover td {
   align-items: center;
   justify-content: space-between;
   padding: 1rem 1.25rem;
-  background: rgba(24, 24, 27, 0.4);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  background: #18181B;
+  border: 1px solid #27272A;
   border-radius: 1rem;
   margin-bottom: 0.6rem;
   transition: all 0.2s ease;
@@ -479,10 +466,8 @@ tr:hover td {
   justify-content: space-between;
   cursor: pointer;
   padding: 1rem 1.25rem;
-  background: rgba(24, 24, 27, 0.5);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  background: #18181B;
+  border: 1px solid #27272A;
   border-radius: 1rem;
   margin-bottom: 0.5rem;
   transition: all 0.2s ease;
@@ -505,17 +490,14 @@ tr:hover td {
 
 /* ─── Status Page ─── */
 .status-card {
-  background: rgba(24, 24, 27, 0.7);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
+  background: #18181B;
+  border: 1px solid #27272A;
   border-radius: 1.5rem;
   padding: 2.5rem;
   max-width: 520px;
   margin: 3rem auto;
   position: relative;
   overflow: hidden;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
 }
 
 .status-card::before {
