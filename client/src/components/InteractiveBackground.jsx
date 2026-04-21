@@ -7,10 +7,9 @@ const InteractiveBackground = () => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
     let animationFrameId;
-    
     // Config for the sphere
-    const numParticles = 900;
-    const sphereRadius = 350;
+    const numParticles = 350; // Drastically reduced for buttery smooth 60fps performance
+    const sphereRadius = 350; // Keep it large and centered
     // The specific colors requested: White, Red, Bright Blue
     const colors = ['#ffffff', '#ff4b4b', '#00d2ff'];
     let particles = [];
