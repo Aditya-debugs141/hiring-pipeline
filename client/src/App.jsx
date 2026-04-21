@@ -69,7 +69,7 @@ function AdminAuth({ children }) {
 
   return (
     <div className="status-card" style={{ marginTop: "10vh" }}>
-      <h2 style={{ marginBottom: "1.5rem", color: "#f0f6fc" }}>Admin Portal Login</h2>
+      <h2 className="section-title" style={{ marginBottom: "1.5rem" }}>Admin Portal Login</h2>
       <form onSubmit={handleLogin}>
         {error && <div className="alert alert-error">{error}</div>}
         <div className="form-group">
