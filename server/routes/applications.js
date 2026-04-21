@@ -4,6 +4,50 @@ const Application = require("../models/Application");
 const { exitPipeline, acknowledgePromotion } = require("../utils/queueManager");
 
 /**
+ * GET /api/applications/search
+ * Search applications by applicantEmail
+ */
+router.get("/search", async (req, res, next) => {
+  try {
+    const { email } = req.query;
+    if (!email) return res.status(400).json({ error: "Email query parameter is required" });
+
+    const applications = await Application.find({
+      applicantEmail: { $regex: new RegExp(`^${email}$`, "i") }
+    }).populate("jobId", "title").sort({ createdAt: -1 });
+
+    const results = applications.map(app => {
+      let queueMessage;
+      switch (app.status) {
+        case "active":
+        case "acknowledged": queueMessage = "You are currently under active review"; break;
+        case "waitlisted": queueMessage = `You are #${app.waitlistPosition} in the waitlist`; break;
+        case "pending_acknowledgment": queueMessage = `You have been promoted. Please acknowledge before ${new Date(app.acknowledgeDeadline).toLocaleString()}`; break;
+        case "accepted": queueMessage = "Congratulations, you have been accepted"; break;
+        case "rejected": queueMessage = "Your application was not selected"; break;
+        case "withdrawn": queueMessage = "You have withdrawn your application"; break;
+        default: queueMessage = "Unknown status";
+      }
+
+      return {
+        applicationId: app._id,
+        applicantName: app.applicantName,
+        status: app.status,
+        waitlistPosition: app.waitlistPosition,
+        acknowledgeDeadline: app.acknowledgeDeadline,
+        decayCount: app.decayCount,
+        jobTitle: app.jobId?.title || null,
+        queueMessage,
+      };
+    });
+
+    return res.status(200).json(results);
+  } catch (err) {
+    next(err);
+  }
+});
+
+/**
  * PATCH /api/applications/:id/status
  * Exit an applicant from the pipeline (accepted, rejected, or withdrawn).
  */

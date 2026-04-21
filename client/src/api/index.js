@@ -61,3 +61,6 @@ export const acknowledgePromotion = (appId) =>
 
 export const getApplicationStatus = (appId) =>
   request(`${BASE}/applications/${appId}/status`);
+
+export const getApplicationsByEmail = (email) =>
+  request(`${BASE}/applications/search?email=${encodeURIComponent(email)}`);
