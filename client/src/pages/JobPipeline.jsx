@@ -159,7 +159,7 @@ function JobPipeline() {
                 <span className="applicant-email">{app.applicantEmail}</span>
                 {app.resumeUrl && (
                   <a
-                    href={`http://localhost:5000${app.resumeUrl}`}
+                    href={`${import.meta.env.VITE_API_URL ? import.meta.env.VITE_API_URL.replace('/api', '') : 'http://localhost:5000'}${app.resumeUrl}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     style={{ fontSize: "0.8rem", color: "#58a6ff", textDecoration: "none", marginTop: "0.2rem" }}
@@ -217,7 +217,7 @@ function JobPipeline() {
                   <span className="applicant-email">{app.applicantEmail}</span>
                   {app.resumeUrl && (
                     <a
-                      href={`http://localhost:5000${app.resumeUrl}`}
+                      href={`${import.meta.env.VITE_API_URL ? import.meta.env.VITE_API_URL.replace('/api', '') : 'http://localhost:5000'}${app.resumeUrl}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       style={{ fontSize: "0.8rem", color: "#58a6ff", textDecoration: "none", marginTop: "0.2rem" }}
