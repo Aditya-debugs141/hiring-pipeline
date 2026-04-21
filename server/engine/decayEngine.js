@@ -115,20 +115,26 @@ async function decayTick() {
       `[DecayEngine] Found ${expiredApplications.length} expired promotion(s)`
     );
 
-    // Process one by one — not in parallel
+    // Process one by one — not in parallel, catching individual failures so one bad doc doesn't break the batch
     for (const application of expiredApplications) {
-      await processDecayedApplication(application);
+      try {
+        await processDecayedApplication(application);
+      } catch (err) {
+        console.error(`[DecayEngine] Failed to process decay for application ${application._id}:`, err);
+        // Continue processing other applications in the batch
+      }
     }
   } catch (err) {
-    console.error("[DecayEngine] Error during tick:", err.message);
+    console.error("[DecayEngine] Critical error during tick:", err);
   }
 }
 
 /**
- * Start the decay engine. Runs every 60 seconds.
+ * Start the decay engine. Runs periodically based on env config or defaults to 60 seconds.
  */
 function startDecayEngine() {
-  setInterval(decayTick, 60 * 1000);
+  const tickMs = parseInt(process.env.DECAY_TICK_INTERVAL_MS, 10) || 60000;
+  setInterval(decayTick, tickMs);
 }
 
 module.exports = { startDecayEngine };
