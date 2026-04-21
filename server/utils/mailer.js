@@ -74,9 +74,10 @@ async function sendPromotionEmail({
   const acknowledgeUrl = `${serverUrl}/api/applications/${applicationId}/acknowledge-email`;
   const statusUrl = `${process.env.APP_URL || "http://localhost:5173"}/status`;
   const deadline = new Date(acknowledgeDeadline).toLocaleString("en-US", {
+    timeZone: "Asia/Kolkata",
     dateStyle: "long",
     timeStyle: "short",
-  });
+  }) + " IST";
 
   const textBody = [
     `Hi ${applicantName},`,
