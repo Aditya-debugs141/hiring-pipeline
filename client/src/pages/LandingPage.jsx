@@ -119,19 +119,19 @@ function LandingPage() {
       {/* Closed Positions */}
       {closedJobs.length > 0 && (
         <section id="closed-positions" className="section" style={{ paddingTop: "0" }}>
-          <h2 className="section-title" style={{ marginBottom: "1.25rem", color: "#8b949e" }}>
+          <h2 className="section-title" style={{ marginBottom: "1.25rem", opacity: 0.7 }}>
             Recently Filled Positions ({closedJobs.length})
           </h2>
           <div className="jobs-grid">
             {closedJobs.map((job) => (
-              <div key={job._id} className="card job-card-public" style={{ opacity: 0.7 }}>
-                <div className="card-title" style={{ color: "#8b949e" }}>{job.title}</div>
+              <div key={job._id} className="card job-card-public" style={{ opacity: 0.6 }}>
+                <div className="card-title">{job.title}</div>
                 <div className="card-subtitle">{job.companyName}</div>
                 <div className="card-meta">
                   <span>
                     {job.activeCount}/{job.activeCapacity} active
                   </span>
-                  <span className="badge" style={{ backgroundColor: "#21262d", color: "#8b949e", border: "1px solid #30363d" }}>
+                  <span className="badge badge-withdrawn">
                     Closed
                   </span>
                 </div>
