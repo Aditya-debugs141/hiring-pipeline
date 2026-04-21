@@ -224,6 +224,16 @@ node test-pipeline.js
 node test-decay.js
 ```
 
+## 🧪 Testing the Application (The Golden Path)
+To quickly test the core "Auto-Promotion" waitlist engine:
+
+1. **Create a Job:** Go to `/admin` (login: `owner` / `password`), click **+ Create New Job**, and set the **Active Capacity** to `1`.
+2. **Apply (Active):** Go to the public landing page. Click the job and apply as "Alice". Since capacity is 1, Alice becomes **Active**.
+3. **Apply (Waitlist):** Apply again as "Bob". Since the single active slot is taken, Bob is placed in **Waitlist #1**.
+4. **Trigger Promotion:** Go back to `/admin`, view the Job Pipeline, and **Reject** Alice.
+5. **The Magic:** Watch Bob automatically move from the Waitlist to **Pending Acknowledgment**, and an email notification will be dispatched to his inbox automatically!
+6. **Final Step:** Go to `/status`, input Bob's Application ID, and click **Acknowledge** to finalize his promotion to Active.
+
 ## Project Structure
 
 ```
