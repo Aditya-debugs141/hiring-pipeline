@@ -884,3 +884,8 @@ body.light-theme .btn:not(.btn-primary):not(.btn-danger):not(.badge):hover {
   border-color: #D4D4D8;
 }
 
+
+
+body.light-theme .job-header h1,
+body.light-theme .form-inline h3 { color: #18181B !important; }
+body.light-theme .card-subtitle { color: #71717A !important; }
