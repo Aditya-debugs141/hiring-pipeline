@@ -154,9 +154,9 @@ router.post("/:id/applications", upload.single("resume"), async (req, res, next)
     const { applicantName, applicantEmail } = req.body;
     const resumeUrl = req.file ? `/uploads/${req.file.filename}` : null;
 
-    if (!applicantName || !applicantEmail || !resumeUrl) {
+    if (!applicantName || !applicantEmail) {
       return res.status(400).json({
-        error: "applicantName, applicantEmail, and resume are required",
+        error: "applicantName and applicantEmail are required",
       });
     }
 

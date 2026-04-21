@@ -246,7 +246,7 @@ async function exitPipeline(applicationId, newStatus) {
     const application = await Application.findOneAndUpdate(
       { _id: applicationId, status: { $in: EXITABLE_STATUSES } },
       { status: newStatus },
-      { session }
+      { session, new: true }
     );
 
     if (!application) {

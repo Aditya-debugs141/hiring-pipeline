@@ -17,7 +17,7 @@ const applicationSchema = new mongoose.Schema(
     },
     resumeUrl: {
       type: String,
-      required: [true, "Resume is required"],
+      default: null,
     },
     status: {
       type: String,
