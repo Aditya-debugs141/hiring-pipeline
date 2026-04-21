@@ -1,6 +1,12 @@
-# Hiring Pipeline — Queue-Based Hiring Management System
+# Hiring Pipeline — A Pipeline That Moves Itself
+
+**XcelCrowd Hackathon Submission: Next In Line**
 
 A full-stack web application that replaces spreadsheet-based hiring workflows with a transparent, queue-based pipeline. Companies post jobs with limited active review slots. Applicants are placed in fair queues with automatic promotion, decay-based accountability, and full audit trails.
+
+### 🚀 Live Demo
+**Frontend:** [https://hiring-pipeline-two.vercel.app/](https://hiring-pipeline-two.vercel.app/)
+*(Please wait up to 50 seconds for the backend to wake up from its free-tier sleep on the first load!)*
 
 ## Architecture
 
@@ -163,26 +169,36 @@ A major architectural challenge in any queuing system is preventing race conditi
 - **Frontend**: React 19, Vite 8, React Router 7, Vanilla CSS
 - **Email**: Nodemailer (optional SMTP)
 
-## Setup & Running
+## 🛠️ Setup Instructions
 
 ### Prerequisites
 - Node.js 18+
-- MongoDB (optional — falls back to in-memory if not available)
+- MongoDB (optional — the app automatically falls back to an in-memory database if MongoDB is not installed locally, so it works out of the box!)
 
-### Install & Run
+### Quick Start (Local Development)
 
-```bash
-# Backend
-cd server
-npm install
-cp .env.example .env    # Edit if needed
-npm run dev             # http://localhost:5000
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/Aditya-debugs141/hiring-pipeline.git
+   cd hiring-pipeline
+   ```
 
-# Frontend (separate terminal)
-cd client
-npm install
-npm run dev             # http://localhost:5173
-```
+2. **Start the Backend:**
+   ```bash
+   cd server
+   npm install
+   # The server will automatically use an in-memory database and a test email account
+   npm run dev
+   # Server runs on http://localhost:5000
+   ```
+
+3. **Start the Frontend (in a new terminal):**
+   ```bash
+   cd client
+   npm install
+   npm run dev
+   # Frontend runs on http://localhost:5173
+   ```
 
 ### Environment Variables (`server/.env`)
 
