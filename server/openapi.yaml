@@ -1,0 +1,205 @@
+openapi: 3.0.0
+info:
+  title: Hiring Pipeline API
+  description: Queue-Based Hiring Management System API
+  version: 1.0.0
+servers:
+  - url: /api
+    description: Base API Path
+paths:
+  /jobs:
+    post:
+      summary: Create a new job
+      tags:
+        - Jobs
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - title
+                - companyName
+                - activeCapacity
+              properties:
+                title:
+                  type: string
+                companyName:
+                  type: string
+                activeCapacity:
+                  type: integer
+                decayWindowMinutes:
+                  type: integer
+                  default: 30
+      responses:
+        '201':
+          description: Job created successfully
+    get:
+      summary: Get all jobs
+      tags:
+        - Jobs
+      responses:
+        '200':
+          description: List of jobs
+  /jobs/{id}:
+    get:
+      summary: Get a specific job and its pipeline state
+      tags:
+        - Jobs
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Job details with active, waitlisted, and exited applicants
+        '404':
+          description: Job not found
+  /jobs/{id}/audit:
+    get:
+      summary: Get audit trail for a job
+      tags:
+        - Jobs
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Audit logs for the job
+  /jobs/{id}/applications:
+    post:
+      summary: Submit a new application to a job
+      tags:
+        - Applications
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+                - applicantName
+                - applicantEmail
+              properties:
+                applicantName:
+                  type: string
+                applicantEmail:
+                  type: string
+                resume:
+                  type: string
+                  format: binary
+          application/json:
+            schema:
+              type: object
+              required:
+                - applicantName
+                - applicantEmail
+              properties:
+                applicantName:
+                  type: string
+                applicantEmail:
+                  type: string
+      responses:
+        '201':
+          description: Application submitted successfully
+        '400':
+          description: Job is closed or invalid input
+        '404':
+          description: Job not found
+  /applications/{id}/status:
+    patch:
+      summary: Exit an applicant from the pipeline
+      tags:
+        - Applications
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - newStatus
+              properties:
+                newStatus:
+                  type: string
+                  enum: [accepted, rejected, withdrawn]
+      responses:
+        '200':
+          description: Application status updated
+        '400':
+          description: Invalid status
+        '404':
+          description: Application not found
+    get:
+      summary: Get current status of an application
+      tags:
+        - Applications
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Application status details
+        '404':
+          description: Application not found
+  /applications/{id}/acknowledge:
+    patch:
+      summary: Acknowledge a waitlist promotion
+      tags:
+        - Applications
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Promotion acknowledged successfully
+        '400':
+          description: Not in pending_acknowledgment state
+        '404':
+          description: Application not found
+  /applications/{id}/acknowledge-email:
+    get:
+      summary: Acknowledge a waitlist promotion via email link
+      tags:
+        - Applications
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '302':
+          description: Redirects to the frontend status page
+  /health:
+    get:
+      summary: Server health check
+      tags:
+        - Health
+      responses:
+        '200':
+          description: Server is healthy
