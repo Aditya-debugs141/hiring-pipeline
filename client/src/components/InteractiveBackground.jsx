@@ -7,8 +7,9 @@ const InteractiveBackground = () => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
     let animationFrameId;
+    
     // Config for the sphere
-    const numParticles = 350; // Drastically reduced for buttery smooth 60fps performance
+    const numParticles = 600; 
     const sphereRadius = 350; // Keep it large and centered
     // The specific colors requested: White, Red, Bright Blue
     const colors = ['#ffffff', '#ff4b4b', '#00d2ff'];
@@ -57,42 +58,41 @@ const InteractiveBackground = () => {
 
     let rotationX = 0;
     let rotationY = 0;
-    let currentCenterX = window.innerWidth / 2;
-    let currentCenterY = window.innerHeight / 2;
+    
+    // Velocity of rotation
+    let vx = 0.002;
+    let vy = 0.002;
 
     const animate = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       
-      let targetCenterX = canvas.width / 2;
-      let targetCenterY = canvas.height / 2;
+      const centerX = canvas.width / 2;
+      const centerY = canvas.height / 2;
       
+      // Antigravity Mechanic: The mouse controls the ROTATION VELOCITY, not the position.
       if (mouse.x !== -1000) {
-        targetCenterX = mouse.x;
-        targetCenterY = mouse.y;
+        // Calculate distance from center to determine spin speed and direction
+        const targetVx = (mouse.y - centerY) * 0.00005;
+        const targetVy = (mouse.x - centerX) * 0.00005;
+        
+        // Smoothly interpolate velocity
+        vx += (targetVx - vx) * 0.05;
+        vy += (targetVy - vy) * 0.05;
+      } else {
+        // Default slow idle spin
+        vx += (0.001 - vx) * 0.01;
+        vy += (0.002 - vy) * 0.01;
       }
-      
-      // Smoothly slide the entire sphere toward the mouse
-      currentCenterX += (targetCenterX - currentCenterX) * 0.05;
-      currentCenterY += (targetCenterY - currentCenterY) * 0.05;
-      
-      // Auto-rotation (very slow)
-      rotationX += 0.001;
-      rotationY += 0.002;
-      
-      // Calculate mouse-driven rotation offset
-      let mouseRotX = 0;
-      let mouseRotY = 0;
-      if (mouse.x !== -1000) {
-        mouseRotX = (mouse.y - targetCenterY) * 0.00005;
-        mouseRotY = (mouse.x - targetCenterX) * 0.00005;
-      }
-      
-      const sinX = Math.sin(rotationX + mouseRotX);
-      const cosX = Math.cos(rotationX + mouseRotX);
-      const sinY = Math.sin(rotationY + mouseRotY);
-      const cosY = Math.cos(rotationY + mouseRotY);
+
+      rotationX += vx;
+      rotationY += vy;
 
       particles.forEach(p => {
+        const sinX = Math.sin(rotationX);
+        const cosX = Math.cos(rotationX);
+        const sinY = Math.sin(rotationY);
+        const cosY = Math.cos(rotationY);
+
         // Rotate around X axis
         let y1 = p.baseY * cosX - p.baseZ * sinX;
         let z1 = p.baseY * sinX + p.baseZ * cosX;
@@ -109,35 +109,18 @@ const InteractiveBackground = () => {
         // Perspective projection
         const fov = 800;
         const scale = fov / (fov + pz);
-        const screenX = currentCenterX + px * scale;
-        const screenY = currentCenterY + py * scale;
+        const screenX = centerX + px * scale;
+        const screenY = centerY + py * scale;
         
-        // Interactive Motion: Repel particles when mouse is near
-        if (mouse.x !== -1000) {
-          const dx = screenX - mouse.x;
-          const dy = screenY - mouse.y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          
-          if (dist < 150) {
-            // Push particle outward from the center of the sphere
-            p.targetR = sphereRadius + (150 - dist) * 1.5; 
-          } else {
-            p.targetR = sphereRadius;
-          }
-        } else {
-          p.targetR = sphereRadius;
-        }
-        
-        // Smooth transition for the radius
-        p.r += (p.targetR - p.r) * 0.1;
+        // Smooth transition for the radius (always stays at sphereRadius now)
+        p.r += (sphereRadius - p.r) * 0.1;
         
         // Draw particle with opacity based on depth
         if (pz > -sphereRadius) {
-          // Particles further back are smaller and more transparent
           const alpha = Math.min(1, Math.max(0.1, scale * scale * 0.8));
           ctx.beginPath();
-          // To give it a slightly "dash" or elongated look like antigravity, we can draw a tiny ellipse
-          ctx.ellipse(screenX, screenY, p.size * scale * 1.2, p.size * scale * 0.8, rotationY, 0, Math.PI * 2);
+          // Draw as a tiny ellipse (dash) that aligns with the rotation, just like Antigravity
+          ctx.ellipse(screenX, screenY, p.size * scale * 1.5, p.size * scale * 0.8, rotationY, 0, Math.PI * 2);
           
           ctx.globalAlpha = alpha;
           ctx.fillStyle = p.color;
