@@ -57,12 +57,23 @@ const InteractiveBackground = () => {
 
     let rotationX = 0;
     let rotationY = 0;
+    let currentCenterX = window.innerWidth / 2;
+    let currentCenterY = window.innerHeight / 2;
 
     const animate = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       
-      const centerX = canvas.width / 2;
-      const centerY = canvas.height / 2;
+      let targetCenterX = canvas.width / 2;
+      let targetCenterY = canvas.height / 2;
+      
+      if (mouse.x !== -1000) {
+        targetCenterX = mouse.x;
+        targetCenterY = mouse.y;
+      }
+      
+      // Smoothly slide the entire sphere toward the mouse
+      currentCenterX += (targetCenterX - currentCenterX) * 0.05;
+      currentCenterY += (targetCenterY - currentCenterY) * 0.05;
       
       // Auto-rotation (very slow)
       rotationX += 0.001;
@@ -72,8 +83,8 @@ const InteractiveBackground = () => {
       let mouseRotX = 0;
       let mouseRotY = 0;
       if (mouse.x !== -1000) {
-        mouseRotX = (mouse.y - centerY) * 0.00005;
-        mouseRotY = (mouse.x - centerX) * 0.00005;
+        mouseRotX = (mouse.y - targetCenterY) * 0.00005;
+        mouseRotY = (mouse.x - targetCenterX) * 0.00005;
       }
       
       const sinX = Math.sin(rotationX + mouseRotX);
@@ -98,8 +109,8 @@ const InteractiveBackground = () => {
         // Perspective projection
         const fov = 800;
         const scale = fov / (fov + pz);
-        const screenX = centerX + px * scale;
-        const screenY = centerY + py * scale;
+        const screenX = currentCenterX + px * scale;
+        const screenY = currentCenterY + py * scale;
         
         // Interactive Motion: Repel particles when mouse is near
         if (mouse.x !== -1000) {
