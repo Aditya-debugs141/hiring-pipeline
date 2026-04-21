@@ -20,6 +20,7 @@ function LandingPage() {
   }, []);
 
   const openJobs = jobs.filter((j) => j.isOpen);
+  const closedJobs = jobs.filter((j) => !j.isOpen);
 
   return (
     <div>
@@ -115,6 +116,37 @@ function LandingPage() {
           </div>
         )}
       </section>
+      {/* Closed Positions */}
+      {closedJobs.length > 0 && (
+        <section id="closed-positions" className="section" style={{ paddingTop: "0" }}>
+          <h2 className="section-title" style={{ marginBottom: "1.25rem", color: "#8b949e" }}>
+            Recently Filled Positions ({closedJobs.length})
+          </h2>
+          <div className="jobs-grid">
+            {closedJobs.map((job) => (
+              <div key={job._id} className="card job-card-public" style={{ opacity: 0.7 }}>
+                <div className="card-title" style={{ color: "#8b949e" }}>{job.title}</div>
+                <div className="card-subtitle">{job.companyName}</div>
+                <div className="card-meta">
+                  <span>
+                    {job.activeCount}/{job.activeCapacity} active
+                  </span>
+                  <span className="badge" style={{ backgroundColor: "#21262d", color: "#8b949e", border: "1px solid #30363d" }}>
+                    Closed
+                  </span>
+                </div>
+                <button
+                  className="btn btn-secondary btn-apply"
+                  disabled
+                  style={{ cursor: "not-allowed", opacity: 0.5 }}
+                >
+                  Applications Closed
+                </button>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
     </div>
   );
 }
