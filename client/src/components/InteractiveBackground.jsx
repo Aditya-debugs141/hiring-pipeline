@@ -9,8 +9,9 @@ const InteractiveBackground = () => {
     let animationFrameId;
     
     // Config for the sphere
-    const numParticles = 600;
-    const sphereRadius = 120; // Made it smaller
+    const numParticles = 900;
+    const sphereRadius = 350;
+    // The specific colors requested: White, Red, Bright Blue
     const colors = ['#ffffff', '#ff4b4b', '#00d2ff'];
     let particles = [];
     
@@ -37,10 +38,6 @@ const InteractiveBackground = () => {
     window.addEventListener('resize', resizeCanvas);
     resizeCanvas();
 
-    // The sphere's actual drawn center on screen
-    let currentCenterX = canvas.width / 2;
-    let currentCenterY = canvas.height / 2;
-
     // Generate points evenly distributed on a sphere using Fibonacci sphere algorithm
     for (let i = 0; i < numParticles; i++) {
       const phi = Math.acos(1 - 2 * (i + 0.5) / numParticles);
@@ -65,29 +62,27 @@ const InteractiveBackground = () => {
     const animate = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       
-      // Determine where the sphere should be
-      let targetCenterX = canvas.width / 2;
-      let targetCenterY = canvas.height / 2;
-      
-      if (mouse.x !== -1000) {
-        targetCenterX = mouse.x;
-        targetCenterY = mouse.y;
-      }
-
-      // Smoothly move the sphere toward the mouse
-      currentCenterX += (targetCenterX - currentCenterX) * 0.08;
-      currentCenterY += (targetCenterY - currentCenterY) * 0.08;
+      const centerX = canvas.width / 2;
+      const centerY = canvas.height / 2;
       
       // Auto-rotation (very slow)
-      rotationX += 0.003;
-      rotationY += 0.005;
+      rotationX += 0.001;
+      rotationY += 0.002;
+      
+      // Calculate mouse-driven rotation offset
+      let mouseRotX = 0;
+      let mouseRotY = 0;
+      if (mouse.x !== -1000) {
+        mouseRotX = (mouse.y - centerY) * 0.00005;
+        mouseRotY = (mouse.x - centerX) * 0.00005;
+      }
+      
+      const sinX = Math.sin(rotationX + mouseRotX);
+      const cosX = Math.cos(rotationX + mouseRotX);
+      const sinY = Math.sin(rotationY + mouseRotY);
+      const cosY = Math.cos(rotationY + mouseRotY);
 
       particles.forEach(p => {
-        const sinX = Math.sin(rotationX);
-        const cosX = Math.cos(rotationX);
-        const sinY = Math.sin(rotationY);
-        const cosY = Math.cos(rotationY);
-
         // Rotate around X axis
         let y1 = p.baseY * cosX - p.baseZ * sinX;
         let z1 = p.baseY * sinX + p.baseZ * cosX;
@@ -104,18 +99,23 @@ const InteractiveBackground = () => {
         // Perspective projection
         const fov = 800;
         const scale = fov / (fov + pz);
-        const screenX = currentCenterX + px * scale;
-        const screenY = currentCenterY + py * scale;
+        const screenX = centerX + px * scale;
+        const screenY = centerY + py * scale;
         
-        // Small interactive bounce when moving fast
-        const dx = currentCenterX - targetCenterX;
-        const dy = currentCenterY - targetCenterY;
-        const speed = Math.sqrt(dx * dx + dy * dy);
-        
-        if (speed > 10) {
-           p.targetR = sphereRadius + (speed * 0.1); // Slightly expand when moving fast
+        // Interactive Motion: Repel particles when mouse is near
+        if (mouse.x !== -1000) {
+          const dx = screenX - mouse.x;
+          const dy = screenY - mouse.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          
+          if (dist < 150) {
+            // Push particle outward from the center of the sphere
+            p.targetR = sphereRadius + (150 - dist) * 1.5; 
+          } else {
+            p.targetR = sphereRadius;
+          }
         } else {
-           p.targetR = sphereRadius;
+          p.targetR = sphereRadius;
         }
         
         // Smooth transition for the radius
@@ -123,9 +123,11 @@ const InteractiveBackground = () => {
         
         // Draw particle with opacity based on depth
         if (pz > -sphereRadius) {
+          // Particles further back are smaller and more transparent
           const alpha = Math.min(1, Math.max(0.1, scale * scale * 0.8));
           ctx.beginPath();
-          ctx.ellipse(screenX, screenY, p.size * scale * 1.5, p.size * scale * 0.8, rotationY, 0, Math.PI * 2);
+          // To give it a slightly "dash" or elongated look like antigravity, we can draw a tiny ellipse
+          ctx.ellipse(screenX, screenY, p.size * scale * 1.2, p.size * scale * 0.8, rotationY, 0, Math.PI * 2);
           
           ctx.globalAlpha = alpha;
           ctx.fillStyle = p.color;
