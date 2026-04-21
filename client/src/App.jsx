@@ -4,7 +4,6 @@ import CompanyDashboard from "./pages/CompanyDashboard";
 import JobPipeline from "./pages/JobPipeline";
 import ApplicantStatus from "./pages/ApplicantStatus";
 import ApplyPage from "./pages/ApplyPage";
-import InteractiveBackground from "./components/InteractiveBackground";
 import "./App.css";
 
 function NavBar() {
@@ -112,7 +111,6 @@ function App() {
 
   return (
     <BrowserRouter>
-      <InteractiveBackground />
       <div className="pointer-glow" />
       <NavBar />
       <main className="container">
