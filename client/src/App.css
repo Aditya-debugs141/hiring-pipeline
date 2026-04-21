@@ -810,3 +810,52 @@ tr:hover td {
   );
   transition: opacity 0.5s ease;
 }
+
+/* --- Light Theme Overrides --- */
+body.light-theme {
+  background: #F4F4F5;
+  color: #18181B;
+}
+
+body.light-theme .navbar {
+  background: rgba(244, 244, 245, 0.8);
+  border-bottom-color: #E4E4E7;
+}
+
+body.light-theme .nav-brand, body.light-theme .nav-links a:hover, body.light-theme .page-title, body.light-theme .card-title, body.light-theme .status-field-value, body.light-theme .hero-title, body.light-theme .step-card h3, body.light-theme .applicant-name, body.light-theme .section-title {
+  color: #18181B;
+}
+
+body.light-theme .nav-links a, body.light-theme .card-meta, body.light-theme .status-field-label, body.light-theme .hero-subtitle, body.light-theme .step-card p, body.light-theme .applicant-email {
+  color: #71717A;
+}
+
+body.light-theme .card, body.light-theme .status-card, body.light-theme .step-card, body.light-theme .applicant-row, body.light-theme .form-inline, body.light-theme .collapsible-header, body.light-theme .collapsible-content {
+  background: #FFFFFF;
+  border-color: #E4E4E7;
+}
+
+body.light-theme table, body.light-theme th, body.light-theme td {
+  background: #FFFFFF;
+  border-color: #E4E4E7;
+}
+
+body.light-theme th { color: #71717A; }
+body.light-theme td { color: #3F3F46; }
+
+body.light-theme .btn:not(.btn-primary):not(.btn-danger):not(.badge) {
+  background: #FFFFFF;
+  color: #18181B;
+  border-color: #E4E4E7;
+}
+
+body.light-theme input, body.light-theme textarea {
+  background: #FFFFFF;
+  color: #18181B;
+  border-color: #E4E4E7;
+}
+
+body.light-theme .nav-divider {
+  background: #E4E4E7 !important;
+}
+

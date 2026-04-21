@@ -1,0 +1,63 @@
+.theme-toggle {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 50%;
+  color: #A1A1AA;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  outline: none;
+}
+
+.theme-toggle:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #FAFAFA;
+}
+
+body.light-theme .theme-toggle {
+  color: #71717A;
+}
+
+body.light-theme .theme-toggle:hover {
+  background: rgba(0, 0, 0, 0.05);
+  color: #18181B;
+}
+
+.icon-container {
+  position: relative;
+  width: 20px;
+  height: 20px;
+}
+
+.sun-icon, .moon-icon {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  transform-origin: center;
+}
+
+/* Dark Mode State (Moon visible, Sun hidden) */
+.theme-toggle.dark .sun-icon {
+  opacity: 0;
+  transform: rotate(90deg) scale(0);
+}
+
+.theme-toggle.dark .moon-icon {
+  opacity: 1;
+  transform: rotate(0deg) scale(1);
+}
+
+/* Light Mode State (Sun visible, Moon hidden) */
+.theme-toggle.light .sun-icon {
+  opacity: 1;
+  transform: rotate(0deg) scale(1);
+}
+
+.theme-toggle.light .moon-icon {
+  opacity: 0;
+  transform: rotate(-90deg) scale(0);
+}

@@ -4,6 +4,7 @@ import CompanyDashboard from "./pages/CompanyDashboard";
 import JobPipeline from "./pages/JobPipeline";
 import ApplicantStatus from "./pages/ApplicantStatus";
 import ApplyPage from "./pages/ApplyPage";
+import ThemeToggle from "./components/ThemeToggle";
 import "./App.css";
 
 function NavBar() {
@@ -15,10 +16,12 @@ function NavBar() {
       <Link to="/" className="nav-brand">
         ⬡ Hiring Pipeline
       </Link>
-      <div className="nav-links">
+      <div className="nav-links" style={{ alignItems: "center" }}>
         <Link to="/" className={isActive("/")}>Jobs</Link>
         <Link to="/status" className={isActive("/status")}>Check Status</Link>
         <Link to="/admin" className={`${isActive("/admin")} nav-admin`}>Admin</Link>
+        <div style={{ width: "1px", height: "20px", background: "#3F3F46", margin: "0 0.5rem" }} className="nav-divider" />
+        <ThemeToggle />
       </div>
     </nav>
   );
