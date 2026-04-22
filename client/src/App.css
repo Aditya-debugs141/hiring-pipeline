@@ -802,25 +802,28 @@ tr:hover td {
 @media (max-width: 640px) {
   /* Navbar */
   .navbar {
-    padding: 0.75rem 1rem;
-    gap: 0.5rem;
+    padding: 0.6rem 0.75rem;
+    gap: 0.35rem;
   }
   .nav-brand {
-    font-size: 1rem;
+    font-size: 0.85rem;
+    white-space: nowrap;
   }
   .nav-links {
-    gap: 0.5rem;
+    gap: 0.35rem;
   }
   .nav-links a {
-    font-size: 0.78rem;
-    padding: 0.4rem 0.15rem;
+    font-size: 0.7rem;
+    padding: 0.35rem 0.1rem;
+    white-space: nowrap;
   }
   .nav-admin {
-    padding: 0.3rem 0.7rem !important;
-    font-size: 0.78rem;
+    padding: 0.25rem 0.6rem !important;
+    font-size: 0.7rem;
   }
   .nav-divider {
-    margin: 0 0.25rem !important;
+    margin: 0 0.15rem !important;
+    height: 16px !important;
   }
 
   /* Layout */
