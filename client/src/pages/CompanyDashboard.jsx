@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { getJobs, createJob } from "../api";
+import { getJobs, createJob, resetDatabase } from "../api";
 
 function CompanyDashboard() {
   const adminRole = sessionStorage.getItem("adminRole") || "";
@@ -68,7 +68,7 @@ function CompanyDashboard() {
   const handleWipeData = async () => {
     if (window.confirm("WARNING: Are you sure you want to wipe the entire database? This cannot be undone!")) {
       try {
-        const { resetDatabase } = await import("../api/index.js");
+        
         await resetDatabase();
         setJobs([]);
         alert("Database completely wiped clean!");
