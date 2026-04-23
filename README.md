@@ -4,9 +4,19 @@
 
 A full-stack web application that replaces spreadsheet-based hiring workflows with a transparent, queue-based pipeline. Companies post jobs with limited active review slots. Applicants are placed in fair queues with automatic promotion, decay-based accountability, and full audit trails.
 
-### 🚀 Live Demo
-**Frontend:** [https://hiring-pipeline-two.vercel.app/](https://hiring-pipeline-two.vercel.app/)
+### 🚀 Live Demo & Judge Testing Guide
+**Frontend:** [https://hiring-pipeline-two.vercel.app/](https://hiring-pipeline-two.vercel.app/)  
 *(Please wait up to 50 seconds for the backend to wake up from its free-tier sleep on the first load!)*
+
+We highly recommend testing the live hosted link above! The entire application is **100% mobile-optimized** and fully functional. Here is how you can test the system end-to-end:
+
+1. **Admin Access:** Go to the `/admin` page. Login with the role `owner` and the master password: `password`.
+2. **Create a Job:** Create a new job with an Active Capacity of 1.
+3. **Trigger the Queue:** Go to the home page (even on your phone!) and apply to the job twice using your *real* email addresses. The first application gets the Active slot; the second goes to the Waitlist.
+4. **Real Emails:** Go back to the Admin dashboard and **Reject** the Active applicant. Check your real email inbox! You will receive a rich HTML email notifying you that you've been promoted from the waitlist and must acknowledge.
+5. **The Penalty System:** If an applicant does not acknowledge their promotion before the countdown timer expires, the Background Decay Engine will automatically strip their active slot, increment their penalty count, and kick them to the *back* of the waitlist to ensure fairness for others waiting.
+
+---
 
 ## Architecture
 
@@ -191,6 +201,7 @@ A major architectural challenge in any queuing system is preventing race conditi
    npm run dev
    # Server runs on http://localhost:5000
    ```
+   **Important Note on Local Emails:** Because `.env` files with real SMTP passwords are not uploaded to GitHub, your local clone will not send *real* emails to your inbox. Instead, the backend will gracefully fallback to **Test Mode (Ethereal Email)**. Whenever an email is sent, look at this terminal window — it will print a `Preview URL` link. Click that link to view the exact HTML email in your browser!
 
 3. **Start the Frontend (in a new terminal):**
    ```bash
@@ -224,14 +235,14 @@ node test-pipeline.js
 node test-decay.js
 ```
 
-## 🧪 Testing the Application (The Golden Path)
-To quickly test the core "Auto-Promotion" waitlist engine:
+## 🧪 Testing the Application Locally (The Golden Path)
+To quickly test the core "Auto-Promotion" waitlist engine on your local machine:
 
 1. **Create a Job:** Go to `/admin` (login: `owner` / `password`), click **+ Create New Job**, and set the **Active Capacity** to `1`.
 2. **Apply (Active):** Go to the public landing page. Click the job and apply as "Alice". Since capacity is 1, Alice becomes **Active**.
 3. **Apply (Waitlist):** Apply again as "Bob". Since the single active slot is taken, Bob is placed in **Waitlist #1**.
 4. **Trigger Promotion:** Go back to `/admin`, view the Job Pipeline, and **Reject** Alice.
-5. **The Magic:** Watch Bob automatically move from the Waitlist to **Pending Acknowledgment**, and an email notification will be dispatched! *(Note: If testing locally without SMTP credentials, the server automatically creates an Ethereal test account. Look at your backend terminal for the `Preview URL` and click it to see the email!)*
+5. **The Magic:** Watch Bob automatically move from the Waitlist to **Pending Acknowledgment**. Because you are running locally without SMTP credentials, look at your backend terminal for the `Preview URL` and click it to see the email!
 6. **Final Step:** Go to `/status`, input Bob's Application ID, and click **Acknowledge** (or just click the button inside the test email) to finalize his promotion to Active.
 
 ## Project Structure
