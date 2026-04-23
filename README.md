@@ -47,6 +47,9 @@ Each job defines an **active capacity** — the maximum number of applicants und
 ### Auto-Close & Auto-Reject
 When the number of `accepted` applicants reaches the job's total active capacity, the job is automatically marked as closed (`isOpen: false`), which prevents further applications. Simultaneously, any remaining candidates in the `waitlisted` or `pending_acknowledgment` states are automatically bulk-rejected with a clear `job_filled` reason.
 
+### Anti-Spam (Duplicate Prevention)
+To ensure fairness, the system prevents duplicate applications. An applicant cannot submit multiple applications for the same job using the same email address. The database will safely reject the attempt and alert the user.
+
 ### Automatic Promotion
 When an active applicant exits the pipeline (accepted, rejected, or withdrawn), the system **automatically promotes** the next waitlisted applicant. No manual intervention required.
 

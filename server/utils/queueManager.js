@@ -36,7 +36,17 @@ async function submitApplication(jobId, applicantName, applicantEmail, resumeUrl
   session.startTransaction();
 
   try {
-    // Attempt to atomically claim an active slot
+    // 1. Check for duplicate application
+    const existingApplication = await Application.findOne({
+      jobId,
+      applicantEmail: { $regex: new RegExp(`^${applicantEmail}$`, "i") }
+    }).session(session);
+
+    if (existingApplication) {
+      throw new Error("Duplicate Application: You have already applied for this role.");
+    }
+
+    // 2. Attempt to atomically claim an active slot
     const job = await Job.findOneAndUpdate(
       {
         _id: jobId,
