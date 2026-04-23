@@ -10,8 +10,8 @@ A full-stack web application that replaces spreadsheet-based hiring workflows wi
 
 We highly recommend testing the live hosted link above! The entire application is **100% mobile-optimized** and fully functional. Here is how you can test the system end-to-end:
 
-1. **Admin Access:** Go to the `/admin` page. Login with the role `owner` and the master password: `password`.
-2. **Create a Job:** Create a new job with an Active Capacity of 1.
+1. **Admin Access:** Go to the `/admin` page. Login with the role `owner` and the master password: `password`. *(Note: As the `owner`, you have access to a "Wipe Database" button. If you ever want to clear out all jobs and applications to start fresh, simply click this button!)*
+2. **Create a Job:** Create a new job with an Active Capacity of 1. You can use real company names and technical roles.
 3. **Trigger the Queue:** Go to the home page (even on your phone!) and apply to the job twice using your *real* email addresses. The first application gets the Active slot; the second goes to the Waitlist.
 4. **Real Emails:** Go back to the Admin dashboard and **Reject** the Active applicant. Check your real email inbox! You will receive a rich HTML email notifying you that you've been promoted from the waitlist and must acknowledge.
 5. **The Penalty System:** If an applicant does not acknowledge their promotion before the countdown timer expires, the Background Decay Engine will automatically strip their active slot, increment their penalty count, and kick them to the *back* of the waitlist to ensure fairness for others waiting.
