@@ -4,6 +4,8 @@ const Job = require("../models/Job");
 const Application = require("../models/Application");
 const AuditLog = require("../models/AuditLog");
 const { submitApplication } = require("../utils/queueManager");
+const validate = require("../middleware/validate");
+const { createJobSchema, submitApplicationSchema } = require("../utils/schemas");
 
 /**
  * DELETE /api/jobs/reset
@@ -24,15 +26,9 @@ router.delete("/reset", async (req, res, next) => {
  * POST /api/jobs
  * Create a new job opening.
  */
-router.post("/", async (req, res, next) => {
+router.post("/", validate(createJobSchema), async (req, res, next) => {
   try {
     const { title, description, companyName, activeCapacity, decayWindowMinutes } = req.body;
-
-    if (!title || !companyName || !activeCapacity) {
-      return res.status(400).json({
-        error: "title, companyName and activeCapacity are required",
-      });
-    }
 
     const job = await Job.create({
       title,
@@ -149,16 +145,10 @@ const upload = multer({
  * POST /api/jobs/:id/applications
  * Submit a new application to a job.
  */
-router.post("/:id/applications", upload.single("resume"), async (req, res, next) => {
+router.post("/:id/applications", upload.single("resume"), validate(submitApplicationSchema), async (req, res, next) => {
   try {
     const { applicantName, applicantEmail } = req.body;
     const resumeUrl = req.file ? `/uploads/${req.file.filename}` : null;
-
-    if (!applicantName || !applicantEmail) {
-      return res.status(400).json({
-        error: "applicantName and applicantEmail are required",
-      });
-    }
 
     const application = await submitApplication(
       req.params.id,
