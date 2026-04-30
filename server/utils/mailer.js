@@ -70,7 +70,10 @@ async function sendPromotionEmail({
     return;
   }
 
-  const serverUrl = process.env.API_URL || `http://localhost:${process.env.PORT || 5000}`;
+  // API_URL = your Render backend URL (e.g. https://hiring-pipeline-xxx.onrender.com)
+  // APP_URL = your Vercel frontend URL (e.g. https://hiring-pipeline-two.vercel.app)
+  // Never fall back to localhost in production — if neither is set, log a warning.
+  const serverUrl = process.env.API_URL || process.env.RENDER_EXTERNAL_URL || `http://localhost:${process.env.PORT || 5000}`;
   const acknowledgeUrl = `${serverUrl}/api/applications/${applicationId}/acknowledge-email`;
   const statusUrl = `${process.env.APP_URL || "http://localhost:5173"}/status`;
   const deadline = new Date(acknowledgeDeadline).toLocaleString("en-US", {
